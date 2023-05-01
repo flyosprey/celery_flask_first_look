@@ -18,7 +18,9 @@ class MyCelery:
             CELERY_DEFAULT_EXCHANGE_TYPE='direct',
             CELERY_DEFAULT_ROUTING_KEY='default',
             CELERY_ROUTES={
+                # default naming of decorator
                 'project.tasks.count': {'queue': 'add', 'routing_key': 'add'},
+                # the same as class.name
                 'MyTask': {'queue': 'MyTask', 'routing_key': 'MyTask'},
             },
             CELERYD_CONCURRENCY=5,
