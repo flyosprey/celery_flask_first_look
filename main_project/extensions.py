@@ -1,7 +1,5 @@
 from celery import Celery
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from project_example.tasks import MyTask
 
 
 class MyCelery:
@@ -15,18 +13,20 @@ class MyCelery:
         self.celery.conf.update(
             CELERY_QUEUES={
                 'add': {'exchange': 'exchange1', 'routing_key': 'add'},
-                'add_user': {'exchange': 'exchange2', 'routing_key': 'add_user'},
+                'MyTask': {'exchange': 'exchange2', 'routing_key': 'MyTask'},
             },
             CELERY_DEFAULT_EXCHANGE_TYPE='direct',
             CELERY_DEFAULT_ROUTING_KEY='default',
             CELERY_ROUTES={
                 'project.tasks.count': {'queue': 'add', 'routing_key': 'add'},
-                'another_project.tasks.add_user': {'queue': 'add_user', 'routing_key': 'add_user'},
+                'MyTask': {'queue': 'MyTask', 'routing_key': 'MyTask'},
             },
             CELERYD_CONCURRENCY=5,
             CELERY_RESULT_BACKEND='redis://localhost:6379/0',
             BROKER_URL='redis://localhost:6379/0',
         )
+
+        self.celery.register_task(MyTask())
 
         class ContextTask(self.celery.Task):
             def __call__(self, *args, **kwargs):

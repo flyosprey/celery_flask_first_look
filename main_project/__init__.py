@@ -1,7 +1,8 @@
 
 from flask import Flask
 from project import models
-from .extensions import my_celery, db
+from .extensions import my_celery
+from .db import db
 from .views import main
 
 

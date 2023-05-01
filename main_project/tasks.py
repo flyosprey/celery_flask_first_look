@@ -1,4 +1,5 @@
-from .extensions import my_celery, db
+from .extensions import my_celery
+from .db import db
 from sqlalchemy import text
 
 

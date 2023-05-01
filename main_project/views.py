@@ -2,22 +2,22 @@ from flask import Blueprint, jsonify
 from celery.result import AsyncResult
 from .extensions import my_celery as celery
 from .tasks import add_user
-from project_2.tasks import add_number_as_user
+from project_example.tasks import MyTask
 
 main = Blueprint('main', __name__)
 
 
-@main.route('/<name>')
+@main.route('/na/<name>')
 def start_name(name):
     print("Start celery task")
     task = add_user.delay(name)
     return f"Result: {task.id}"
 
 
-@main.route('/<number>')
+@main.route('/nu/<number>')
 def start_number(number):
     print("Start celery task")
-    task = add_number_as_user.delay(number)
+    task = MyTask().delay(number)
     return f"Result: {task.id}"
 
 
